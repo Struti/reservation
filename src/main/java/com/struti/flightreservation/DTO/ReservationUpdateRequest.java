@@ -2,6 +2,7 @@ package com.struti.flightreservation.DTO;
 
 public class ReservationUpdateRequest {
 
+
     private Long id;
     private Boolean checkedIn;
     private int numberOfBags;

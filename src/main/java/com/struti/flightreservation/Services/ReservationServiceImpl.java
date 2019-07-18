@@ -9,11 +9,14 @@ import com.struti.flightreservation.Models.Passenger;
 import com.struti.flightreservation.Models.Reservation;
 import com.struti.flightreservation.Util.EmailUtil;
 import com.struti.flightreservation.Util.PDFGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
     private IFlightRepository flightRepository;
     private IPassengerRepository passengerRepository;
     private IReservationRepository reservationRepository;
@@ -22,7 +25,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     public ReservationServiceImpl(IFlightRepository flightRepository, IPassengerRepository passengerRepository,
                                   IReservationRepository reservationRepository, PDFGenerator pdfGenerator,
-                                  EmailUtil email){
+                                  EmailUtil email) {
         this.flightRepository = flightRepository;
         this.passengerRepository = passengerRepository;
         this.reservationRepository = reservationRepository;
@@ -32,10 +35,12 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public Reservation bookFlight(ReservationRequest request) {
+        LOGGER.info("Inside bookFlight()");
 
         //Make Payment
 
-        Long flightId =  request.getFlightId();
+        Long flightId = request.getFlightId();
+        LOGGER.info("Fetching flight for flight id: " + flightId);
         Flight flight = flightRepository.findById(flightId).get();
 
         Passenger passenger = new Passenger();
@@ -43,7 +48,7 @@ public class ReservationServiceImpl implements IReservationService {
         passenger.setLastName(request.getPassengerLastName());
         passenger.setEmail(request.getPassengerEmail());
         passenger.setPhone(request.getPassengerPhone());
-
+        LOGGER.info("Saving the passenger: " + passenger);
         Passenger savedPassenger = passengerRepository.save(passenger);
 
         Reservation reservation = new Reservation();
@@ -51,13 +56,15 @@ public class ReservationServiceImpl implements IReservationService {
         reservation.setFlight(flight);
         reservation.setPassenger(savedPassenger);
         reservation.setCheckedIn(false);
-
+        LOGGER.info("Saving the reservation: " + reservation);
         Reservation savedReservation = reservationRepository.save(reservation);
 
         String filePath = "C:\\Users\\astrutin\\Documents\\pdf\\reservation" + savedReservation.getId() + ".pdf";
+        LOGGER.info("Generate the Itinerary");
         pdfGenerator.generateItnerary(savedReservation,
                 filePath);
-        email.sendItinerary(passenger.getEmail(),filePath);
+        LOGGER.info("Sending the Email with the Itinerary");
+        email.sendItinerary(passenger.getEmail(), filePath);
         return savedReservation;
     }
 }

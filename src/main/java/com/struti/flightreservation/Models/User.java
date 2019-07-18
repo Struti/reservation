@@ -1,6 +1,6 @@
 package com.struti.flightreservation.Models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Entity
 public class User extends AbstractModel {
@@ -40,5 +40,11 @@ public class User extends AbstractModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User [ firstName = " + firstName + ", lastName = " + lastName + ", email = " + email + ", password = " +
+                password + "]";
     }
 }

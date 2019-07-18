@@ -19,51 +19,49 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    public UserController (IUserRepository userRepository){
+    public UserController(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @RequestMapping("/showRegistration")
-    public String showRegistration(){
+    public String showRegistration() {
+        LOGGER.info("Inside showRegistration()");
         return "login/registerUser";
     }
 
     @RequestMapping("/showLogin")
-    public String showLogin(){
+    public String showLogin() {
+        LOGGER.info("Inside showLogin()");
         return "login/login";
     }
 
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
-    public String register(@ModelAttribute("user") User user){
-
+    public String register(@ModelAttribute("user") User user) {
+        LOGGER.info("Inside {} register() " + user);
         userRepository.save(user);
         return "login/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password, ModelMap modelMap){
+    public String login(@RequestParam("email") String email, @RequestParam("password") String password, ModelMap modelMap) {
+        LOGGER.info("Inside login() and the email is: " + email);
         User user = userRepository.findByEmail(email);
-        LOGGER.error("ERROR");
-        LOGGER.warn("WARN");
-        LOGGER.info("INFO");
-        LOGGER.debug("DEBUG");
-        LOGGER.trace("TRACE");
-        if (user.getPassword().equals(password)){
+        if (user.getPassword().equals(password)) {
             return "flights/findFlights";
-        }else {
-            String msg ="Invalid Username or password. Please Try again";
-            wrongCredentials(msg,modelMap);
+        } else {
+            String msg = "Invalid Username or password. Please Try again";
+            wrongCredentials(msg, modelMap);
         }
-        return"login/login";
+        return "login/login";
     }
 
     @RequestMapping(value = "/login")
-    public String wrongCredentials(String msg, ModelMap modelMap){
+    public String wrongCredentials(String msg, ModelMap modelMap) {
+        LOGGER.info("Inside wrongCredentials() Message is = " + msg);
+        modelMap.addAttribute("msg", msg);
 
-        modelMap.addAttribute("msg",msg);
-
-        return"login/login";
+        return "login/login";
     }
 
 }

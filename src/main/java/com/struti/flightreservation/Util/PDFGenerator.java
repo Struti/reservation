@@ -2,12 +2,13 @@ package com.struti.flightreservation.Util;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.struti.flightreservation.Models.Reservation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -17,7 +18,10 @@ import java.io.FileOutputStream;
 @Component
 public class PDFGenerator {
 
-    public void generateItnerary(Reservation reservation, String filePath){
+    private static final Logger LOGGER = LoggerFactory.getLogger(PDFGenerator.class);
+
+    public void generateItnerary(Reservation reservation, String filePath) {
+        LOGGER.error("generateItnerary() ");
 
         Document document = new Document();
 
@@ -33,6 +37,7 @@ public class PDFGenerator {
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
+            LOGGER.error("Exception generateItnerary() " + e);
             e.printStackTrace();
         }
 

@@ -3,7 +3,7 @@ package com.struti.flightreservation.Models;
 import javax.persistence.Entity;
 
 @Entity
-public class Passenger extends AbstractModel{
+public class Passenger extends AbstractModel {
 
     private String firstName;
     private String lastName;
@@ -49,5 +49,11 @@ public class Passenger extends AbstractModel{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Passenger [ firstName = " + firstName + ", lastName = " + lastName + ", middleName = " + middleName +
+                ", email = " + email + ", phone: " + phone + "]";
     }
 }

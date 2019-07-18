@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-public class Flight extends AbstractModel{
+public class Flight extends AbstractModel {
 
     private String flightNumber;
     private String operatingAirlines;
@@ -60,5 +60,12 @@ public class Flight extends AbstractModel{
 
     public void setEstimatedDepartureTime(Timestamp estimatedDepartureTime) {
         this.estimatedDepartureTime = estimatedDepartureTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight [ flightNumber = " + flightNumber + ", operatingAirlines = " + operatingAirlines +
+                ", departureCity = " + departureCity + ", arrivalCity = " + arrivalCity + ", dateOfDeparture: " +
+                dateOfDeparture + ", estimatedDepartureTime: " + estimatedDepartureTime + "]";
     }
 }
