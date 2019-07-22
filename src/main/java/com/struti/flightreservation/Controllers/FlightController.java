@@ -37,4 +37,10 @@ public class FlightController {
 
         return "flights/displayFlights";
     }
+
+    @RequestMapping("admin/showAddFlight")
+    public String showAddFlight() {
+
+        return "flights/addFlight";
+    }
 }

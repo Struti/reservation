@@ -11,10 +11,15 @@ import com.struti.flightreservation.Util.EmailUtil;
 import com.struti.flightreservation.Util.PDFGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
+
+    @Value("${C:\\\\Users\\\\astrutin\\\\Documents\\\\pdf\\\\reservation}")
+    private String ITINERARY_DIR;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
     private IFlightRepository flightRepository;
@@ -34,6 +39,7 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
+    @Transactional
     public Reservation bookFlight(ReservationRequest request) {
         LOGGER.info("Inside bookFlight()");
 
@@ -59,7 +65,7 @@ public class ReservationServiceImpl implements IReservationService {
         LOGGER.info("Saving the reservation: " + reservation);
         Reservation savedReservation = reservationRepository.save(reservation);
 
-        String filePath = "C:\\Users\\astrutin\\Documents\\pdf\\reservation" + savedReservation.getId() + ".pdf";
+        String filePath = ITINERARY_DIR + savedReservation.getId() + ".pdf";
         LOGGER.info("Generate the Itinerary");
         pdfGenerator.generateItnerary(savedReservation,
                 filePath);
