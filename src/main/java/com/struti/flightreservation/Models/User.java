@@ -13,6 +13,7 @@ public class User extends AbstractModel {
     private String lastName;
     private String email;
     private String password;
+
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

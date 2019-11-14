@@ -8,7 +8,6 @@ import com.struti.flightreservation.Models.Flight;
 import com.struti.flightreservation.Models.Passenger;
 import com.struti.flightreservation.Models.Reservation;
 import com.struti.flightreservation.Util.EmailUtil;
-import com.struti.flightreservation.Util.PDFGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,16 +24,13 @@ public class ReservationServiceImpl implements IReservationService {
     private IFlightRepository flightRepository;
     private IPassengerRepository passengerRepository;
     private IReservationRepository reservationRepository;
-    private PDFGenerator pdfGenerator;
     private EmailUtil email;
 
     public ReservationServiceImpl(IFlightRepository flightRepository, IPassengerRepository passengerRepository,
-                                  IReservationRepository reservationRepository, PDFGenerator pdfGenerator,
-                                  EmailUtil email) {
+                                  IReservationRepository reservationRepository, EmailUtil email) {
         this.flightRepository = flightRepository;
         this.passengerRepository = passengerRepository;
         this.reservationRepository = reservationRepository;
-        this.pdfGenerator = pdfGenerator;
         this.email = email;
     }
 
@@ -67,8 +63,7 @@ public class ReservationServiceImpl implements IReservationService {
 
         String filePath = ITINERARY_DIR + savedReservation.getId() + ".pdf";
         LOGGER.info("Generate the Itinerary");
-        pdfGenerator.generateItnerary(savedReservation,
-                filePath);
+
         LOGGER.info("Sending the Email with the Itinerary");
         email.sendItinerary(passenger.getEmail(), filePath);
         return savedReservation;
